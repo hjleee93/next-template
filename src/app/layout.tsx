@@ -7,9 +7,9 @@ import { MSWComponent } from "@/providers/MSWComponent";
 initMocks()
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
   return (
     <html lang="en">

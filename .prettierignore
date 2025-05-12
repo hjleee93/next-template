@@ -1,0 +1,14 @@
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/dist
+**/build
+**/coverage
+**/next-env.d.ts
+**/next.config.ts
+.next
+dist
+package.json
+package-lock.json
+.prettierrc
