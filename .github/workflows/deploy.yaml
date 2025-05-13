@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - ci/cd
 
 jobs:
   deploy:
@@ -23,3 +23,7 @@ jobs:
 
       - name: build
         run: npm run build
+
+  permissions:
+    contents: read
+    pull-requests: write
