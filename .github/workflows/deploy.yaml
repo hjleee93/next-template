@@ -14,20 +14,16 @@ jobs:
     steps: 
       - name: checkout repository
         uses: actions/checkout@v4
-      
       - name: create pull request
         if: github.ref == 'refs/heads/ci-cd'
-        run: gh pr create --base main --fill
+        run: gh pr comment ${{ github.event.pull_request.number }} --body "안녕하세요! PR을 검토하겠습니다. 👋"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-
       - name: install dependencies
         run: npm install
 
