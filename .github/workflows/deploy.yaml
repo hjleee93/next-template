@@ -14,6 +14,13 @@ jobs:
     steps: 
       - name: checkout repository
         uses: actions/checkout@v4
+      
+      - name: create pull request
+        if: github.ref == 'refs/heads/main'
+        run: gh pr create --fill --base main --title "Deploy: ${{ github.event.pull_request.title }}" --body "Deploy: ${{ github.event.pull_request.body }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
 
       - name: setup node
         uses: actions/setup-node@v4
@@ -26,6 +33,6 @@ jobs:
 
       - name: build
         run: npm run build
-    
 
-  
+      - name: deploy
+        run: npm run deploy
