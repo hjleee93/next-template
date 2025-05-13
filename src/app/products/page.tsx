@@ -29,7 +29,7 @@ export type Product = {
 	tags: string[];
 };
 
-export async function getProducts() {
+async function getProducts() {
 	const res = await fetch('http://localhost:4001/products', {
 		cache: 'force-cache',
 	});
