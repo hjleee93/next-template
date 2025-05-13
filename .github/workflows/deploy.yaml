@@ -17,7 +17,7 @@ jobs:
       
       - name: create pull request
         if: github.ref == 'refs/heads/main'
-        run: gh pr create --base main --title "Deploy: ${{ github.event.pull_request.title }}" --body "Deploy: ${{ github.event.pull_request.body }}"
+        run: gh pr create --base main --title "Deploy: 자동 배포" --body "자동화된 배포 PR입니다."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
