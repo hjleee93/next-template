@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: create pull request
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/ci/cd'
         run: gh pr create --base main --fill
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
