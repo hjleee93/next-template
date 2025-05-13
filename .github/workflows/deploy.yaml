@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest 
+    permissions:
+      contents: read
+      pull-requests: write
     steps: 
       - name: checkout repository
         uses: actions/checkout@v4
@@ -23,7 +26,6 @@ jobs:
 
       - name: build
         run: npm run build
+    
 
-  permissions:
-    contents: read
-    pull-requests: write
+  
