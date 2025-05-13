@@ -17,7 +17,7 @@ jobs:
       
       - name: create pull request
         if: github.ref == 'refs/heads/main'
-        run: gh pr comment ${{ github.event.pull_request.number }} --body "안녕하세요! PR을 검토하겠습니다. 👋"
+        run: gh pr create --base main --fill
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
