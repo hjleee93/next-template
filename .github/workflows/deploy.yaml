@@ -15,7 +15,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
       - name: create pull request
-        if: github.ref == 'refs/heads/ci-cd'
+        if: github.ref != 'refs/heads/main'
         run: gh pr comment ${{ github.event.pull_request.number }} --body "안녕하세요! PR을 검토하겠습니다. 👋"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
