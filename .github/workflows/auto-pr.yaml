@@ -18,7 +18,14 @@ jobs:
         with: 
           fetch-depth: 0  # 전체 커밋 히스토리 가져오기
           ref: ci-cd      # 명시적으로 ci-cd 브랜치 지정
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Lint
+        run: npm run lint
+
       - name: Create Pull Request
+        if: success() # lint가 통과한 경우에만 PR 생성
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
