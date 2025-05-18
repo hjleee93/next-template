@@ -1,4 +1,4 @@
-honame: Auto PR from ci-cd to main
+name: Auto PR from ci-cd to main
 
 on:
   push:
