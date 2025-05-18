@@ -1,3 +1,4 @@
+
 'use client';
 import { useCounterStore } from '@/providers/counter-store-provider';
 import Link from 'next/link';
@@ -36,6 +37,10 @@ export default function Home() {
 		<h2 className="text-2xl font-bold">MSW</h2>
 		<Link href={'/msw/server'}>MSW - server</Link>
 		<Link href={'/msw/client'}>MSW - client</Link>
+
+		
+		<h2 className="text-2xl font-bold">shadcn/ui</h2>
+		<Link href={'/shadcn'}>shadcn components</Link>
 	</div>
 	</>
 	);
