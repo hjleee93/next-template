@@ -12,12 +12,12 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      with:
-        fetch-depth: 0  # 전체 커밋 히스토리 가져오기
-        ref: ci-cd      # 명시적으로 ci-cd 브랜치 지정
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0  # 전체 커밋 히스토리 가져오기
+          ref: ci-cd      # 명시적으로 ci-cd 브랜치 지정
       - name: Create Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
