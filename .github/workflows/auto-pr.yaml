@@ -27,5 +27,6 @@ jobs:
               --title "자동 PR: ci-cd → main" \
               --body "ci-cd 브랜치에서 main 브랜치로 자동 생성된 PR입니다."
           else
-            echo "이미 열린 PR이 있습니다."
+            PR_NUMBER=$(gh pr list --base main --head ci-cd --state open --json number --jq '.[0].number')
+            gh pr comment $PR_NUMBER --body "🤖 새로운 커밋이 푸시되었습니다!"
           fi
