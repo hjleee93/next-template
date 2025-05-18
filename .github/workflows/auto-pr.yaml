@@ -8,16 +8,28 @@ on:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up GitHub CLI
+        uses: cli/cli-action@v2
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          commit-message: "Auto PR from ci-cd to main"
-          base: main
-          branch: ci-cd
-          title: "자동 PR: ci-cd → main"
-          body: "ci-cd 브랜치에서 main 브랜치로 자동 생성된 PR입니다."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 이미 PR이 열려 있는지 체크
+          PR_EXISTS=$(gh pr list --base main --head ci-cd --state open --json number --jq 'length')
+          if [ "$PR_EXISTS" -eq 0 ]; then
+            gh pr create \
+              --base main \
+              --head ci-cd \
+              --title "자동 PR: ci-cd → main" \
+              --body "ci-cd 브랜치에서 main 브랜치로 자동 생성된 PR입니다."
+          else
+            echo "이미 열린 PR이 있습니다."
+          fi
