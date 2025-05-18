@@ -12,6 +12,9 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      with:
+        fetch-depth: 0  # 전체 커밋 히스토리 가져오기
+        ref: ci-cd      # 명시적으로 ci-cd 브랜치 지정
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +28,8 @@ jobs:
             gh pr create \
               --base main \
               --head ci-cd \
-              --fill
+              --title "자동 PR: ci-cd → main" \
+              --body "$(git log --pretty=format:%s origin/main..ci-cd)"
           else
             PR_NUMBER=$(gh pr list --base main --head ci-cd --state open --json number --jq '.[0].number')
             gh pr comment $PR_NUMBER --body "새로운 커밋이 푸시되었습니다: $(git log -1 --pretty=%B)"
