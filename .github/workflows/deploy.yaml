@@ -17,6 +17,10 @@ jobs:
     steps: 
       - name: checkout repository
         uses: actions/checkout@v4
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install gh
       - name: create pull request
         if: github.ref != 'refs/heads/main'
         run: gh pr comment ${{ github.event.pull_request.number }} --body "안녕하세요! PR을 검토하겠습니다. 👋"
@@ -29,6 +33,7 @@ jobs:
           cache: 'npm'
       - name: install dependencies
         run: npm install
-
+      - name: lint
+        run: npm run lint
       - name: build
         run: npm run build
