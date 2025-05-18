@@ -1,5 +1,7 @@
 name: Auto PR from ci-cd to main
 
+concurrency: pr-ci-cd-to-main  # 동시 실행 방지
+
 on:
   push:
     branches:
@@ -24,9 +26,9 @@ jobs:
             gh pr create \
               --base main \
               --head ci-cd \
-              --title "자동 PR: ci-cd → main" \
-              --body "ci-cd 브랜치에서 main 브랜치로 자동 생성된 PR입니다."
+              --fill
           else
             PR_NUMBER=$(gh pr list --base main --head ci-cd --state open --json number --jq '.[0].number')
-            gh pr comment $PR_NUMBER --body "🤖 새로운 커밋이 푸시되었습니다!"
+            gh pr comment $PR_NUMBER --body "새로운 커밋이 푸시되었습니다: $(git log -1 --pretty=%B)"
+            gh pr edit $PR_NUMBER --add-label "auto-updated"
           fi
