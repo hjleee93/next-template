@@ -1,0 +1,37 @@
+name: Auto PR from ci-cd to main
+
+concurrency: pr-ci-cd-to-main  # 동시 실행 방지
+
+on:
+  push:
+    branches:
+      - ci-cd
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0  # 전체 커밋 히스토리 가져오기
+          ref: ci-cd      # 명시적으로 ci-cd 브랜치 지정
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 이미 PR이 열려 있는지 체크
+          PR_EXISTS=$(gh pr list --base main --head ci-cd --state open --json number --jq 'length')
+          if [ "$PR_EXISTS" -eq 0 ]; then
+            gh pr create \
+              --base main \
+              --head ci-cd \
+              --title "자동 PR: ci-cd → main" \
+              --body "$(git log --pretty=format:%s origin/main..ci-cd)"
+          else
+            PR_NUMBER=$(gh pr list --base main --head ci-cd --state open --json number --jq '.[0].number')
+            gh pr comment $PR_NUMBER --body "새로운 커밋이 푸시되었습니다: $(git log -1 --pretty=%B)"
+            gh pr edit $PR_NUMBER --add-label "auto-updated"
+          fi
