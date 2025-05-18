@@ -1,0 +1,23 @@
+honame: Auto PR from ci-cd to main
+
+on:
+  push:
+    branches:
+      - ci-cd
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          commit-message: "Auto PR from ci-cd to main"
+          base: main
+          branch: ci-cd
+          title: "자동 PR: ci-cd → main"
+          body: "ci-cd 브랜치에서 main 브랜치로 자동 생성된 PR입니다."
