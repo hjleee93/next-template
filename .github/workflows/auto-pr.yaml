@@ -3,7 +3,7 @@ name: Auto PR to main
 on:
   push:
     branches:
-      - ci-cd
+      - feature-*
 
 concurrency:
   group: auto-pr-${{ github.ref_name }}
