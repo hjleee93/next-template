@@ -2,7 +2,7 @@ import Products from '../components/Products';
 
 export type Product = {
 	id: number;
-	handle: string;
+	name: string;
 	availableForSale: boolean;
 	isNew: boolean;
 	title: string;
