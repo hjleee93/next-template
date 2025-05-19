@@ -50,5 +50,4 @@ jobs:
             if (!review || review.trim() === '') {
               review = "코드 분석이 완료되었습니다. 특별한 이슈가 발견되지 않았습니다.";
             }
-            fi
            
