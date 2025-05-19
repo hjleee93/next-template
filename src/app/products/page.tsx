@@ -1,8 +1,3 @@
-import {
-	dehydrate,
-	HydrationBoundary,
-	QueryClient,
-} from '@tanstack/react-query';
 import Products from '../components/Products';
 
 export type Product = {
@@ -29,26 +24,12 @@ export type Product = {
 	tags: string[];
 };
 
-async function getProducts() {
-	const res = await fetch('http://localhost:4001/products', {
-		cache: 'force-cache',
-	});
-	const data: Product[] = await res.json();
-
-	return { data };
-}
 
 export default async function ProductPage() {
-	const queryClient = new QueryClient();
-
-	await queryClient.prefetchQuery({
-		queryKey: ['products'],
-		queryFn: () => getProducts(),
-	});
-
+	
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
+		<>
 			<Products />
-		</HydrationBoundary>
+		</>
 	);
 }

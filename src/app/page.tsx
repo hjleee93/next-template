@@ -14,22 +14,22 @@ export default function Home() {
 				className="outline mt-3 p-2 cursor-pointer"
 				onClick={increment}
 			>
-				{' '}
-				plus+{' '}
+				plus+
 			</button>
 			<br />
 			<button
 				className="outline mt-3 p-2 cursor-pointer"
 				onClick={decrement}
 			>
-				{' '}
-				minus-{' '}
+				minus-
 			</button>
 			<br />
 			<button className="outline mt-3 p-2 cursor-pointer" onClick={init}>
-				{' '}
-				init{' '}
+				init
 			</button>
+			<div className="flex flex-col gap-2">
+				Infinite Scroll
+			</div>
 		</div>
 	);
 }

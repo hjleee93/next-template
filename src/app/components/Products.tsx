@@ -1,20 +1,12 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
-import { Product } from '../products/page';
 import Link from 'next/link';
+import { useProductQuery } from '@/hooks/useProductQuery';
 
 const Products = () => {
-	const { data: products } = useQuery({
-		queryKey: ['products'],
-		queryFn: async () => {
-			const res = await fetch('http://localhost:4001/products');
-			const data: Product[] = await res.json();
-			return { data };
-		},
-		staleTime: 1000,
-		gcTime: 2000,
-	});
+	const { data: products } = useProductQuery();
 
+	console.log(products);
+	
 	return (
 		<section className="flex flex-col gap-4">
 			<h2 className="text-lg font-bold">Products</h2>
