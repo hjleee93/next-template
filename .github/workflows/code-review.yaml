@@ -37,7 +37,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const review = `${{ steps.mcp-analysis.outputs.review }}`;
+            let review = `${{ steps.mcp-analysis.outputs.review }}`;
 
             if (review) {
               github.rest.issues.createComment({
