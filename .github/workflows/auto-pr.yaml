@@ -1,6 +1,6 @@
-name: Auto PR from {{ github.ref_name }} to develop 
+name: Auto PR from {{ github.ref_name }} to main   
 
-concurrency: pr-{{ github.ref_name }}-to-develop  # 동시 실행 방지
+concurrency: pr-{{ github.ref_name }}-to-main  # 동시 실행 방지
 
 on:
   push:
@@ -30,15 +30,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # 이미 PR이 열려 있는지 체크
-          PR_EXISTS=$(gh pr list --base develop --head {{ github.ref_name }} --state open --json number --jq 'length')
+          PR_EXISTS=$(gh pr list --base main --head {{ github.ref_name }} --state open --json number --jq 'length')
           if [ "$PR_EXISTS" -eq 0 ]; then
             gh pr create \
-              --base develop \
+              --base main \
               --head {{ github.ref_name }} \
-              --title "자동 PR: {{ github.ref_name }} → develop" \
-              --body "$(git log --pretty=format:%s origin/develop..{{ github.ref_name }})"
+              --title "자동 PR: {{ github.ref_name }} → main" \
+              --body "$(git log --pretty=format:%s origin/main..{{ github.ref_name }})"
           else
-            PR_NUMBER=$(gh pr list --base develop --head {{ github.ref_name }} --state open --json number --jq '.[0].number')
+            PR_NUMBER=$(gh pr list --base main --head {{ github.ref_name }} --state open --json number --jq '.[0].number')
             gh pr comment $PR_NUMBER --body "새로운 커밋이 푸시되었습니다: $(git log -1 --pretty=%B)"
             gh pr edit $PR_NUMBER --add-label "auto-updated"
           fi
