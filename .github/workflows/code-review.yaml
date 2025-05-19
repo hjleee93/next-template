@@ -38,10 +38,17 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const review = `${{ steps.mcp-analysis.outputs.review }}`;
-            
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: review
-            });
+
+            if (review) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: review
+              });
+            }
+            if (!review || review.trim() === '') {
+              review = "코드 분석이 완료되었습니다. 특별한 이슈가 발견되지 않았습니다.";
+            }
+            fi
+           
