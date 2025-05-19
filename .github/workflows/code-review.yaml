@@ -1,0 +1,53 @@
+name: MCP 코드 리뷰
+
+on:
+  pull_request:
+    types: [opened, synchronize] # 풀 리퀘스트가 열리거나 동기화될 때 실행
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: PR 변경 파일 확인
+        id: changed-files
+        run: |
+          echo "files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '\.js|\.ts|\.jsx|\.tsx' | tr '\n' ' ')" >> $GITHUB_OUTPUT
+      
+      - name: MCP 서버로 코드 분석 요청
+        id: mcp-analysis
+        run: |
+          # 변경된 파일 목록을 MCP 서버로 전송하고 분석 결과 받기
+          RESPONSE=$(curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"files": "${{ steps.changed-files.outputs.files }}", "pr_number": "${{ github.event.number }}"}' \
+            https://aaeb-14-63-67-157.ngrok-free.app/api/analyze)
+          
+          # 결과를 저장
+          echo "review=$(echo $RESPONSE | jq -r '.review')" >> $GITHUB_OUTPUT
+      
+      - name: PR에 리뷰 작성
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let review = `${{ steps.mcp-analysis.outputs.review }}`;
+
+            if (review) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: review
+              });
+            }
+            if (!review || review.trim() === '') {
+              review = "코드 분석이 완료되었습니다. 특별한 이슈가 발견되지 않았습니다.";
+            }
+           
