@@ -23,6 +23,10 @@ jobs:
       - name: MCP 서버로 코드 분석 요청
         id: mcp-analysis
         run: |
+          # 디버깅을 위한 출력 추가
+          echo "변경된 파일 목록: ${{ steps.changed-files.outputs.files }}"
+          # 테스트를 위한 더미 응답 설정
+           echo "review=코드 분석 결과: 테스트 메시지입니다." >> $GITHUB_OUTPUT
           # 변경된 파일 목록을 MCP 서버로 전송하고 분석 결과 받기
           RESPONSE=$(curl -X POST \
             -H "Content-Type: application/json" \
