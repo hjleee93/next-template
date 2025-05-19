@@ -5,7 +5,7 @@ concurrency: pr-${{ github.ref_name }}-to-main  # 동시 실행 방지
 on:
   push:
     branches:
-      - ${{ github.ref_name }}
+      - ci-cd #여긴 변수 못씀
 jobs:
   create-pr:
     runs-on: ubuntu-latest
