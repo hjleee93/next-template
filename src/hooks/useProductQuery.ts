@@ -15,7 +15,6 @@ async function getProducts() {
 	const res = await fetch(`http://localhost:4000/api/products`, {
 		cache: 'force-cache',
     credentials: 'include'
-    
 	});
 	const data: Product[] = await res.json();
 
