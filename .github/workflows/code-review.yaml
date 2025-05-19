@@ -24,7 +24,7 @@ jobs:
           RESPONSE=$(curl -X POST \
             -H "Content-Type: application/json" \
             -d '{"files": "${{ steps.changed-files.outputs.files }}", "pr_number": "${{ github.event.number }}"}' \
-            http://localhost:4000/api/analyze)
+            https://aaeb-14-63-67-157.ngrok-free.app/api/analyze)
           
           # 결과를 저장
           echo "review=$(echo $RESPONSE | jq -r '.review')" >> $GITHUB_OUTPUT
